@@ -2,7 +2,7 @@
   "name": "reactjs",
   "version": "0.1.0",
   "private": true,
-  "home": "https://lyhd.github.io/reactjs/",
+  "homepage": "https://lyhd.github.io/reactjs/",
   "dependencies": {
     "gh-pages": "^2.1.1",
     "react": "^16.8.6",
