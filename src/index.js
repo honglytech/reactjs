@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import Axios from "./axios";
 
 const App = () => {
   const [value, setValue] = useState("coconut");
@@ -123,6 +124,7 @@ const App = () => {
           ))}
         </div>
       </form>
+      <Axios />
     </div>
   );
 };
