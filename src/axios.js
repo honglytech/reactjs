@@ -2,24 +2,38 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Axios = () => {
-  const [photos, setPhotos] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [dogs, setDogs] = useState([]);
 
   useEffect(() => {
-    axios.get(`https://jsonplaceholder.typicode.com/photos`).then(res => {
-      const photos = res.data;
-      setPhotos(photos);
-    });
+    // axios.get(`/users`).then(res => {
+    //   const users = res.data;
+    //   setUsers(users);
+    // });
+
+    axios
+      .all([axios.get(`/users`), axios.get(`/api/breeds/image/random`)])
+      .then(
+        axios.spread((user, dog) => {
+          const users = user.data;
+          setUsers(users);
+
+          const dogs = dog.data;
+          setDogs(dogs);
+        })
+      );
   }, []);
 
   return (
     <div>
       <ul>
-        {photos.map(photo => (
-          <li key={photo.id}>
-            {photo.title}, {photo.url},{" "}
-            <img src={photo.url} alt={photo.title} />
+        {users.map(user => (
+          <li key={user.id}>
+            {user.username}, {user.name},{" "}
           </li>
         ))}
+        {dogs.message} <br />
+        {<img src={dogs.message} alt={dogs.message} />}
       </ul>
     </div>
   );
