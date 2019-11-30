@@ -4,6 +4,7 @@ import axios from "axios";
 const Axios = () => {
   const [users, setUsers] = useState([]);
   const [dogs, setDogs] = useState([]);
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     // axios.get(`/users`).then(res => {
@@ -12,14 +13,21 @@ const Axios = () => {
     // });
 
     axios
-      .all([axios.get(`/users`), axios.get(`/api/breeds/image/random`)])
+      .all([
+        axios.get(`/users`),
+        axios.get(`/api/breeds/image/random`),
+        axios.get(`http://localhost:5000/api/courses`)
+      ])
       .then(
-        axios.spread((user, dog) => {
+        axios.spread((user, dog, course) => {
           const users = user.data;
           setUsers(users);
 
           const dogs = dog.data;
           setDogs(dogs);
+
+          const courses = course.data;
+          setCourses(courses);
         })
       );
   }, []);
@@ -34,6 +42,11 @@ const Axios = () => {
         ))}
         {dogs.message} <br />
         {<img src={dogs.message} alt={dogs.message} />}
+        {courses.map(course => (
+          <li key={course._id}>
+            {course.course}, {course.tag},{" "}
+          </li>
+        ))}
       </ul>
     </div>
   );
