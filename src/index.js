@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { useDropzone } from "react-dropzone";
 
@@ -30,7 +30,39 @@ const rejectStyle = {
   borderColor: "#ff1744"
 };
 
+const thumbsContainer = {
+  display: "flex",
+  flexDirection: "row",
+  flexWrap: "wrap",
+  marginTop: 16
+};
+
+const thumb = {
+  display: "inline-flex",
+  borderRadius: 2,
+  border: "1px solid #eaeaea",
+  marginBottom: 8,
+  marginRight: 8,
+  width: "auto",
+  height: 200,
+  padding: 4,
+  boxSizing: "border-box"
+};
+
+const thumbInner = {
+  display: "flex",
+  minWidth: 0,
+  overflow: "hidden"
+};
+
+const img = {
+  display: "block",
+  width: "auto",
+  height: "100%"
+};
+
 function StyledDropzone(props) {
+  const [files, setFiles] = useState([]);
   const {
     getRootProps,
     getInputProps,
@@ -39,7 +71,20 @@ function StyledDropzone(props) {
     isDragReject,
     acceptedFiles,
     open
-  } = useDropzone({ accept: "image/*", noClick: true, noKeyboard: true });
+  } = useDropzone({
+    accept: "image/*",
+    noClick: true,
+    noKeyboard: true,
+    onDrop: acceptedFiles => {
+      setFiles(
+        acceptedFiles.map(file =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })
+        )
+      );
+    }
+  });
 
   const style = useMemo(
     () => ({
@@ -51,7 +96,23 @@ function StyledDropzone(props) {
     [isDragActive, isDragReject]
   );
 
-  const files = acceptedFiles.map(file => (
+  const thumbs = files.map(file => (
+    <div style={thumb} key={file.name}>
+      <div style={thumbInner}>
+        <img src={file.preview} style={img} />
+      </div>
+    </div>
+  ));
+
+  useEffect(
+    () => () => {
+      // Make sure to revoke the data uris to avoid memory leaks
+      files.forEach(file => URL.revokeObjectURL(file.preview));
+    },
+    [files]
+  );
+
+  const filepath = acceptedFiles.map(file => (
     <li key={file.path}>
       {file.path} - {file.size} bytes
     </li>
@@ -68,8 +129,9 @@ function StyledDropzone(props) {
       </div>
       <aside>
         <h4>Files</h4>
-        <ul>{files}</ul>
+        <ul>{filepath}</ul>
       </aside>
+      <aside style={thumbsContainer}>{thumbs}</aside>
     </div>
   );
 }
