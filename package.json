@@ -7,6 +7,7 @@
     "react-card-flip": "^1.0.10",
     "react-dom": "^16.10.2",
     "react-dropzone": "^10.2.1",
+    "react-google-charts": "^3.0.15",
     "react-scripts": "3.2.0"
   },
   "scripts": {
