@@ -1,21 +1,38 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
-import Calendar from "react-calendar";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
-const ReactCalendar = () => {
-  const [date, setDate] = useState(new Date());
-
-  const onChange = date => {
-    setDate(date);
-  };
+const ReactCopyClipboard = () => {
+  const [value, setValue] = useState("");
+  const [copied, setCopied] = useState(false);
 
   return (
     <div>
-      <Calendar showWeekNumbers onChange={onChange} value={date} />
-      {console.log(date)}
-      {date.toString()}
+      <input
+        value={value}
+        onChange={({ target: { value } }) => {
+          setValue(value);
+          setCopied(false);
+        }}
+      />
+      <br />
+      <br />
+      <CopyToClipboard text={value} onCopy={() => setCopied(true)}>
+        <span>Copy to clipboard with span</span>
+      </CopyToClipboard>
+      <br />
+      <br />
+      <CopyToClipboard text={value} onCopy={() => setCopied(true)}>
+        <button>Copy to clipboard with button</button>
+      </CopyToClipboard>
+      <br />
+      <br />
+      {copied ? <span style={{ color: "red" }}>Copied.</span> : null}
+      <br />
+      <br />
+      <textarea />
     </div>
   );
 };
 
-render(<ReactCalendar />, document.querySelector("#root"));
+render(<ReactCopyClipboard />, document.querySelector("#root"));
