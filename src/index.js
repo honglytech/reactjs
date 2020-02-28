@@ -1,38 +1,36 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import FacebookLogin from "react-facebook-login";
 
-const ReactCopyClipboard = () => {
-  const [value, setValue] = useState("");
-  const [copied, setCopied] = useState(false);
+const ReactFacebookLogin = () => {
+  const [accessToken, setAccessToken] = useState("");
+
+  const componentClicked = data => {
+    console.log("data", data);
+  };
+
+  const responseFacebook = response => {
+    // console.log(response.accessToken);
+    setAccessToken(response.accessToken);
+  };
 
   return (
     <div>
-      <input
-        value={value}
-        onChange={({ target: { value } }) => {
-          setValue(value);
-          setCopied(false);
-        }}
+      React Facebook Login
+      <br />
+      User Short-Lived Access Token:
+      <br />
+      {accessToken}
+      <br />
+      <FacebookLogin
+        appId="1614986128648687"
+        autoLoad={true}
+        fields="name,email,picture"
+        onClick={componentClicked}
+        callback={responseFacebook}
       />
-      <br />
-      <br />
-      <CopyToClipboard text={value} onCopy={() => setCopied(true)}>
-        <span>Copy to clipboard with span</span>
-      </CopyToClipboard>
-      <br />
-      <br />
-      <CopyToClipboard text={value} onCopy={() => setCopied(true)}>
-        <button>Copy to clipboard with button</button>
-      </CopyToClipboard>
-      <br />
-      <br />
-      {copied ? <span style={{ color: "red" }}>Copied.</span> : null}
-      <br />
-      <br />
-      <textarea />
     </div>
   );
 };
 
-render(<ReactCopyClipboard />, document.querySelector("#root"));
+render(<ReactFacebookLogin />, document.querySelector("#root"));
