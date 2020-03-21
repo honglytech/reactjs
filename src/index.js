@@ -1,34 +1,58 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { render } from "react-dom";
-import axios from "axios";
+import { storage } from "./firebase";
 
-const ReactFBPageRandomQuote = () => {
-  const postRandomQuote = () => {
-    axios
-      .post("https://graph.facebook.com/1515470308497082/photos?", {
-        url: "https://source.unsplash.com/featured/?quote",
-        access_token:
-          "EAACO0hp8nVYBAOEl1d3ZAoHx6Dt6cSIpMlJBGPO3TsuW7mpFZANCkZBVkjeBMIZAcgSNysNnymyRyp4phWUUqARwsHUEVbjokMfojZCe8bqApv5uLijZCftI9IUzZBRWRtXgqjqng5ELZBfYy2Tnh3zeECAmdSvCVKEaY97Pgi9ZB903YxhmWXq7DaklgAXWsnWT08aGd65iZBRgZDZD"
-      })
-      .then(
-        res => {
-          const result = res.data;
-          console.log(result);
-          alert("Success!");
-        },
-        error => {
-          console.log(error);
-        }
-      );
+const ReactFirebaseFileUpload = () => {
+  const [image, setImage] = useState(null);
+  const [url, setUrl] = useState("");
+  const [progress, setProgress] = useState(0);
+
+  const handleChange = e => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
   };
+
+  const handleUpload = () => {
+    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    uploadTask.on(
+      "state_changed",
+      snapshot => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(progress);
+      },
+      error => {
+        console.log(error);
+      },
+      () => {
+        storage
+          .ref("images")
+          .child(image.name)
+          .getDownloadURL()
+          .then(url => {
+            setUrl(url);
+          });
+      }
+    );
+  };
+
+  console.log("image: ", image);
 
   return (
     <div>
-      React Facebook Post Page Status - Random Photo
+      <progress value={progress} max="100" />
       <br />
-      <button onClick={() => postRandomQuote()}>Post Photo</button>
+      <br />
+      <input type="file" onChange={handleChange} />
+      <button onClick={handleUpload}>Upload</button>
+      <br />
+      {url}
+      <br />
+      <img src={url || "http://via.placeholder.com/300"} alt="firebase-image" />
     </div>
   );
 };
 
-render(<ReactFBPageRandomQuote />, document.querySelector("#root"));
+render(<ReactFirebaseFileUpload />, document.querySelector("#root"));

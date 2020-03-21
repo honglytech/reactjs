@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.19.2",
+    "firebase": "^7.11.0",
     "react": "^16.12.0",
     "react-calendar": "^2.19.2",
     "react-card-flip": "^1.0.10",
