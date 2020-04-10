@@ -1,19 +1,18 @@
 {
-  "name": "reactnetlify",
+  "name": "covid-19",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
-    "firebase": "^7.11.0",
-    "react": "^16.12.0",
-    "react-calendar": "^2.19.2",
-    "react-card-flip": "^1.0.10",
-    "react-copy-to-clipboard": "^5.0.2",
-    "react-dom": "^16.10.2",
-    "react-dropzone": "^10.2.1",
-    "react-facebook-login": "^4.1.1",
-    "react-google-charts": "^3.0.15",
-    "react-scripts": "3.2.0"
+    "bootstrap": "^4.4.1",
+    "react": "^16.13.1",
+    "react-bootstrap": "^1.0.0",
+    "react-columns": "^1.2.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
