@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "name": "Golden Circle Golden Pash Juice 6 Pack 250ml",
+    "img": "https://i.ebayimg.com/images/g/Pd4AAOSwdpxdm~JH/s-l1600.jpg",
+    "barcode": "9310179007191",
+    "price": 4.5
+  },
+  {
+    "id": 2,
+    "name": "Cadbury Mini Eggs Countline 41.5g",
+    "img": "http://thewarehouse.co.nz/dw/image/v2/AAWO_PRD/on/demandware.static/-/Sites-twl-master-catalog/default/dw8be45e01/72/bc/R2539435_40.jpg",
+    "barcode": "9300617072393",
+    "price": 1
+  },
+  {
+    "id": 3,
+    "name": "Pringles Bbq Crisps Chips 53gm",
+    "img": "https://i.ebayimg.com/images/g/ZFAAAOSwOzddm8to/s-l1600.jpg",
+    "barcode": "8886467103711",
+    "price": 1.9
+  },
+  {
+    "id": 4,
+    "name": "Nestle Milo Bars Original 10 pack",
+    "img": "https://www.allysbasket.com/39037-thickbox_default/nestle-milo-bars-original-10-pack.jpg",
+    "barcode": "9300605111240",
+    "price": 7
+  },
+  {
+    "id": 5,
+    "name": "Kleenex Facial Tissues 140 Aloe Vera",
+    "img": "https://i.ebayimg.com/images/g/jx4AAOSwKHtd09Th/s-l1600.jpg",
+    "barcode": "9310088002997",
+    "price": 2.6
+  },
+  {
+    "id": 6,
+    "name": "Brand’s Essence Of Chicken – Original 68ml (6 + 1 Bottle)",
+    "img": "https://i2.wp.com/www.wangwang.sg/wp-content/uploads/2020/01/shopping.jpeg",
+    "barcode": "8852001110446",
+    "price": 38
+  },
+  {
+    "id": 7,
+    "name": "Macro Pumpkin Kernels 250g",
+    "img": "https://cdn0.woolworths.media/content/wowproductimages/large/231811.jpg",
+    "barcode": "9300633914127",
+    "price": 4
+  }
+]
