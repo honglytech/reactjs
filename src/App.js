@@ -1,68 +1,84 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from "react-bootstrap/Form";
-import Card from "react-bootstrap/Card";
-import Columns from "react-columns";
-var data = require("./db.json");
+import Button from "react-bootstrap/Button";
+import axios from "axios";
 
 function App() {
-  const [results, setResults] = useState([]);
-  const [searchBarcode, setSearchBarcode] = useState("");
+  const [summary, setSummary] = useState("");
+  const [description, setDescription] = useState("");
 
-  useEffect(() => {
-    setResults(data);
-  }, []);
-
-  const filterBarcode = results.filter((item) => {
-    return searchBarcode !== "" ? item.barcode === searchBarcode : item;
-  });
-
-  const searchResults = filterBarcode.map((data, i) => {
-    return (
-      <Card
-        key={i}
-        bg="light"
-        text="dark"
-        className="text-center"
-        style={{ margin: "10px" }}
-      >
-        <Card.Img variant="top" src={data.img} />
-        <Card.Body>
-          <Card.Text>Product name: {data.name}</Card.Text>
-          <Card.Text>Price: ${data.price}</Card.Text>
-          <Card.Text>Barcode: {data.barcode}</Card.Text>
-        </Card.Body>
-      </Card>
-    );
-  });
+  const handleSubmit = () => {
+    axios
+      .post(
+        `http://localhost:8080/rest/api/2/issue/`,
+        {
+          fields: {
+            project: {
+              key: "JOL",
+            },
+            summary: summary,
+            description: description,
+            issuetype: {
+              name: "Story",
+            },
+            customfield_10100: "JOL-4",
+          },
+        },
+        {
+          headers: {
+            Authorization: "Basic aG9uZ2x5dGVjaDpqaXJhb25sb2NhbHB3",
+          },
+          // auth: {
+          //   username: "honglytech",
+          //   password: "jiraonlocalpw",
+          // },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+      });
+  };
 
   return (
     <div>
       <div
         style={{
-          backgroundColor: "#ADFF2F",
+          backgroundColor: "#0052CC",
           height: "90px",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <h2>SMART POS</h2>
+        <h2 style={{ color: "white" }}>Jira REST API</h2>
       </div>
       <div style={{ backgroundColor: "#7CFC00", height: "5px" }}></div>
       <br />
       <Form>
-        <Form.Group controlId="formGroupSearch">
+        <Form.Group controlId="formGroupJira">
+          <Form.Label>Jira summary</Form.Label>
           <Form.Control
             autoFocus
             type="text"
-            placeholder="Search barcode"
-            onChange={(e) => setSearchBarcode(e.target.value)}
+            placeholder="Enter summary"
+            onChange={(e) => setSummary(e.target.value)}
+          />
+          <br />
+          <Form.Label>Jira description</Form.Label>
+          <Form.Control
+            autoFocus
+            type="text"
+            placeholder="Enter description"
+            onChange={(e) => setDescription(e.target.value)}
           />
         </Form.Group>
+        <Button variant="primary" onClick={handleSubmit}>
+          Submit
+        </Button>
       </Form>
       <br />
-      <Columns columns="4">{searchResults}</Columns>
     </div>
   );
 }
