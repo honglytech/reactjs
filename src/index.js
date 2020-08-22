@@ -2,97 +2,97 @@ import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
 import axios from "axios";
 
-const Example = () => {
-  const [regMarPer, setRegMarPer] = useState("");
-  const [exchange, setExchange] = useState("");
-  const [shortName, setShortName] = useState("");
-  const [longName, setLongName] = useState("");
-  const [symbol, setSymbol] = useState("");
-  const [regMarOpen, setRegMarOpen] = useState("");
-  const [regMarHigh, setRegMarHigh] = useState("");
-  const [regMarLow, setRegMarLow] = useState("");
-  const [regMarPrice, setRegMarPrice] = useState("");
-  const [regMarVol, setRegMarVol] = useState("");
+const CurrencyConverter = () => {
+  const [uSDAUD, setUSDAUD] = useState("");
+  const [first, setFirst] = useState("AUD");
+  const [second, setSecond] = useState("USD");
+  const [rate, setRate] = useState([]);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   axios({
+  //     method: "GET",
+  //     url:
+  //       "https://free.currconv.com/api/v7/convert?q=USD_AUD&compact=ultra&apiKey=5a49beefa5e7696bc287",
+  //   })
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setUSDAUD(response.data.USD_AUD);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
+  const getRate = (first, second) => {
     axios({
       method: "GET",
-      url:
-        "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-statistics",
-      headers: {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
-        "x-rapidapi-key": "b7e55f2aacmsh5bd0d302b3991f2p1adc6cjsn5594b6ec9ead",
-        useQueryString: true,
-      },
-      params: {
-        region: "AU",
-        symbol: "APT.AX",
-      },
+      url: `https://free.currconv.com/api/v7/convert?q=${first}_${second}&compact=ultra&apiKey=5a49beefa5e7696bc287`,
     })
       .then((response) => {
-        // console.log(response.data.price);
-        setExchange(response.data.price.exchange);
-        setRegMarPer(response.data.price.regularMarketChangePercent.fmt);
-        setShortName(response.data.price.shortName);
-        setLongName(response.data.price.longName);
-        setSymbol(response.data.price.symbol);
-        setRegMarOpen(response.data.price.regularMarketOpen.fmt);
-        setRegMarHigh(response.data.price.regularMarketDayHigh.fmt);
-        setRegMarLow(response.data.price.regularMarketDayLow.fmt);
-        setRegMarPrice(response.data.price.regularMarketPrice.fmt);
-        setRegMarVol(response.data.price.regularMarketVolume.fmt);
+        console.log(response.data);
+
+        setRate(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-
-  const bgColor = regMarPer.includes("-") ? "red" : "#7CFC00";
+  };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
+    <>
       <div
         style={{
-          backgroundColor: bgColor,
-          width: "300px",
-          height: "350px",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          fontSize: "25px",
+          height: "70px",
+          width: "100%",
+          backgroundColor: "#cdff63",
+          fontSize: "30px",
+          color: "blue",
         }}
       >
-        {exchange}
-        <br />
-        {symbol}
-        <br />
-        {shortName}
-        <br />
-        {longName}
-        <br />
-        <br />
-        Last Price: ${regMarPrice}
-        <br />
-        Today's Change: {regMarPer}
-        <br />
-        Open: ${regMarOpen}
-        <br />
-        High: ${regMarHigh}
-        <br />
-        Low: ${regMarLow}
-        <br />
-        Volume: ${regMarVol}
+        Currency Converter PRO
       </div>
-    </div>
+      <div
+        style={{ height: "5px", width: "100%", backgroundColor: "#9ffe36" }}
+      ></div>
+      <br />
+      <div style={{ marginLeft: "33%" }}>
+        <div
+          style={{
+            height: "150px",
+            width: "400px",
+            backgroundColor: "#94e5ff",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: "25px",
+          }}
+        >
+          1 {first} = {rate[`${first}_${second}`]} {second}
+        </div>
+        <br />
+        <input
+          type="text"
+          value={first}
+          onChange={(e) => setFirst(e.target.value)}
+        />
+        <input
+          type="text"
+          value={second}
+          onChange={(e) => setSecond(e.target.value)}
+        />
+        <button
+          onClick={() => {
+            getRate(first, second);
+          }}
+        >
+          Convert
+        </button>
+      </div>
+    </>
   );
 };
 
-render(<Example />, document.querySelector("#root"));
+render(<CurrencyConverter />, document.querySelector("#root"));
