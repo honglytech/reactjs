@@ -1,37 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { render } from "react-dom";
 import axios from "axios";
 
-const CurrencyConverter = () => {
-  const [uSDAUD, setUSDAUD] = useState("");
-  const [first, setFirst] = useState("AUD");
-  const [second, setSecond] = useState("USD");
-  const [rate, setRate] = useState([]);
+const WeatherApp = () => {
+  const [temperature, setTemperature] = useState("");
+  const [desc, setDesc] = useState("");
+  const [city, setCity] = useState("Melbourne");
+  const [country, setCountry] = useState("AU");
 
-  // useEffect(() => {
-  //   axios({
-  //     method: "GET",
-  //     url:
-  //       "https://free.currconv.com/api/v7/convert?q=USD_AUD&compact=ultra&apiKey=5a49beefa5e7696bc287",
-  //   })
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setUSDAUD(response.data.USD_AUD);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
-
-  const getRate = (first, second) => {
+  const getWeatherData = (city, country) => {
     axios({
       method: "GET",
-      url: `https://free.currconv.com/api/v7/convert?q=${first}_${second}&compact=ultra&apiKey=5a49beefa5e7696bc287`,
+      url: `http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&APPID=180941f68139fba12f166dc35d9b688b`,
     })
       .then((response) => {
-        console.log(response.data);
+        console.log(response.data.main.temp);
+        // Kelvin to Fahrenheit
+        // setTemperature((response.data.main.temp - 273.15) * 1.8 + 32);
 
-        setRate(response.data);
+        // Kelvin to Celsius
+        setTemperature(response.data.main.temp - 273.15);
+        // console.log(response.data);
+        setDesc(response.data.weather[0].main);
       })
       .catch((error) => {
         console.log(error);
@@ -47,22 +37,22 @@ const CurrencyConverter = () => {
           alignItems: "center",
           height: "70px",
           width: "100%",
-          backgroundColor: "#cdff63",
+          backgroundColor: "#226ba3",
           fontSize: "30px",
-          color: "blue",
+          color: "#fff",
         }}
       >
-        Currency Converter PRO
+        Weather APP
       </div>
-      <div
-        style={{ height: "5px", width: "100%", backgroundColor: "#9ffe36" }}
-      ></div>
+      {/* <div
+        style={{ height: "5px", width: "100%", backgroundColor: "blue" }}
+      ></div> */}
       <br />
       <div style={{ marginLeft: "33%" }}>
         <div
           style={{
             height: "150px",
-            width: "400px",
+            width: "450px",
             backgroundColor: "#94e5ff",
             display: "flex",
             justifyContent: "center",
@@ -70,29 +60,34 @@ const CurrencyConverter = () => {
             fontSize: "25px",
           }}
         >
-          1 {first} = {rate[`${first}_${second}`]} {second}
+          {new Date().toLocaleString()}
+          <br />
+          {city} Weather
+          <br />
+          {/* {Math.round(temperature * 100) / 100} ℉ */}
+          {Math.round(temperature * 100) / 100} ℃ - {desc}
         </div>
         <br />
         <input
           type="text"
-          value={first}
-          onChange={(e) => setFirst(e.target.value)}
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
         />
         <input
           type="text"
-          value={second}
-          onChange={(e) => setSecond(e.target.value)}
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
         />
         <button
           onClick={() => {
-            getRate(first, second);
+            getWeatherData(city, country);
           }}
         >
-          Convert
+          GET
         </button>
       </div>
     </>
   );
 };
 
-render(<CurrencyConverter />, document.querySelector("#root"));
+render(<WeatherApp />, document.querySelector("#root"));
