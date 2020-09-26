@@ -1,132 +1,61 @@
 import React, { useState } from "react";
 import { render } from "react-dom";
-import { Layout, Menu, Breadcrumb } from "antd";
-import {
-  DesktopOutlined,
-  PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import "./index.css";
-import "antd/dist/antd.css";
+import TextareaAutosize from "react-textarea-autosize";
 
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
+const EncodeBase64 = () => {
+  const [selectetdFile, setSelectedFile] = useState([]);
+  const [fileBase64String, setFileBase64String] = useState("");
 
-const AntDesign = () => {
-  const [collapsed, setCollapsed] = useState(false);
-
-  const onCollapse = (collapsed) => {
-    setCollapsed(!collapsed);
+  const onFileChange = (e) => {
+    setSelectedFile(e.target.files);
+    console.log(e.target.files[0]);
+    console.log(e.target.files[0].name);
+    console.log(e.target.files[0].size);
+    console.log(e.target.files[0].type);
   };
+
+  const encodeFileBase64 = (file) => {
+    var reader = new FileReader();
+    if (file) {
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        var Base64 = reader.result;
+        console.log(Base64);
+        setFileBase64String(Base64);
+      };
+      reader.onerror = (error) => {
+        console.log("error: ", error);
+      };
+    }
+  };
+
+  // encodeFileBase64(selectetdFile[0]);
 
   return (
     <div>
-      <Layout style={{ minHeight: "100vh" }}>
-        <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-          <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-            <Menu.Item key="1" icon={<PieChartOutlined />}>
-              Option 1
-            </Menu.Item>
-            <Menu.Item key="2" icon={<DesktopOutlined />}>
-              Option 2
-            </Menu.Item>
-            <SubMenu key="sub1" icon={<UserOutlined />} title="User">
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
-            </SubMenu>
-            <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
-              <Menu.Item key="6">Team 1</Menu.Item>
-              <Menu.Item key="8">Team 2</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="9" icon={<FileOutlined />} />
-          </Menu>
-        </Sider>
-        <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }} />
-          <Content style={{ margin: "0 16px" }}>
-            <Breadcrumb style={{ margin: "16px 0" }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
-            </Breadcrumb>
-            <div
-              className="site-layout-background"
-              style={{ padding: 24, minHeight: 360 }}
-            >
-              Bill is a cat.
-            </div>
-          </Content>
-          <Footer style={{ textAlign: "center" }}>
-            Hong Ly Tech ©2020 Created by Hong
-          </Footer>
-        </Layout>
-      </Layout>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "green",
+          height: "60px",
+          width: "100%",
+          color: "#FFF",
+          fontSize: "30px",
+        }}
+      >
+        Files/Image Base64 Encoding
+      </div>
+      <br />
+      <input type="file" id="input" onChange={onFileChange} />
+      <TextareaAutosize
+        maxRows={20}
+        value={fileBase64String}
+        onChange={encodeFileBase64(selectetdFile[0])}
+      />
     </div>
   );
 };
 
-// class SiderDemo extends React.Component {
-//   state = {
-//     collapsed: false,
-//   };
-
-//   onCollapse = (collapsed) => {
-//     console.log(collapsed);
-//     this.setState({ collapsed });
-//   };
-
-//   render() {
-//     return (
-//       <Layout style={{ minHeight: "100vh" }}>
-//         <Sider
-//           collapsible
-//           collapsed={this.state.collapsed}
-//           onCollapse={this.onCollapse}
-//         >
-//           <div className="logo" />
-//           <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-//             <Menu.Item key="1" icon={<PieChartOutlined />}>
-//               Option 1
-//             </Menu.Item>
-//             <Menu.Item key="2" icon={<DesktopOutlined />}>
-//               Option 2
-//             </Menu.Item>
-//             <SubMenu key="sub1" icon={<UserOutlined />} title="User">
-//               <Menu.Item key="3">Tom</Menu.Item>
-//               <Menu.Item key="4">Bill</Menu.Item>
-//               <Menu.Item key="5">Alex</Menu.Item>
-//             </SubMenu>
-//             <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
-//               <Menu.Item key="6">Team 1</Menu.Item>
-//               <Menu.Item key="8">Team 2</Menu.Item>
-//             </SubMenu>
-//             <Menu.Item key="9" icon={<FileOutlined />} />
-//           </Menu>
-//         </Sider>
-//         <Layout className="site-layout">
-//           <Header className="site-layout-background" style={{ padding: 0 }} />
-//           <Content style={{ margin: "0 16px" }}>
-//             <Breadcrumb style={{ margin: "16px 0" }}>
-//               <Breadcrumb.Item>User</Breadcrumb.Item>
-//               <Breadcrumb.Item>Bill</Breadcrumb.Item>
-//             </Breadcrumb>
-//             <div
-//               className="site-layout-background"
-//               style={{ padding: 24, minHeight: 360 }}
-//             >
-//               Bill is a cat.
-//             </div>
-//           </Content>
-//           <Footer style={{ textAlign: "center" }}>
-//             Hong Ly Tech ©2020 Created by Hong
-//           </Footer>
-//         </Layout>
-//       </Layout>
-//     );
-//   }
-// }
-
-render(<AntDesign />, document.querySelector("#root"));
+render(<EncodeBase64 />, document.querySelector("#root"));
