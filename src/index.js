@@ -2,19 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { value: "coconut" };
 
-    // this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+    state = { value: "coconut" }; // constructor super is depericated
 
-  //   handleChange(event) {
-  //     this.setState({ value: event.target.value });
-  //   }
+  
 
-  handleSubmit(event) {
+
+//using arrow function to auto bind 
+  handleSubmit=(event)=> {
     alert("Your favorite flavor is: " + this.state.value);
     event.preventDefault();
   }
@@ -25,6 +20,8 @@ class App extends React.Component {
 
   render() {
     return (
+      
+      <React.Fragment>
       <form onSubmit={this.handleSubmit}>
         <label>
           Pick your favorite flavor:
@@ -37,6 +34,8 @@ class App extends React.Component {
         </label>
         <input type="submit" value="Submit" />
       </form>
+            </React.Fragment>
+
     );
   }
 }
