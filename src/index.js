@@ -1,30 +1,16 @@
+import "react-app-polyfill/ie11";
+import "react-app-polyfill/stable";
 import React from "react";
 import { render } from "react-dom";
 import Bowser from "bowser";
 
-const DetectBrowsers = () => {
-  var isChrome =
-    !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+const browser = Bowser.getParser(window.navigator.userAgent);
 
-  var isFirefox = typeof InstallTrigger !== "undefined";
-
-  var isIE = false || !!document.documentMode;
-
-  // this is no longer working
-  // var isEdge = !isIE && !!window.StyleMedia;
-
-  const browser = Bowser.getParser(window.navigator.userAgent);
-
+const ReactIE = () => {
   return (
     <div>
-      {/* {isChrome
-        ? "Yes, it is Chrome!"
-        : isFirefox
-        ? "Firefox!"
-        : isIE
-        ? "IE"
-        : "I don't know!"} */}
-
+      How to run React App in IE9 or IE11
+      <br />
       {"You are using " +
         browser.parsedResult.browser.name +
         " v" +
@@ -35,4 +21,4 @@ const DetectBrowsers = () => {
   );
 };
 
-render(<DetectBrowsers />, document.querySelector("#root"));
+render(<ReactIE />, document.querySelector("#root"));
